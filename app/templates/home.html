@@ -1,0 +1,72 @@
+{% extends "layout.html" %}
+{% block content %}
+
+
+    <div>
+
+        <br>
+        <div class="text-center">
+            <h1>Image Classifier</h1>
+            <h5>-- Digit Recognition --</h5>
+        </div>
+        <br><br><br>
+
+        <main role="main" class="container">
+          <div class="row justify-content-center">
+            <div class="col-lg-6 text-center">
+              {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                  {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">
+                      {{ message }}
+                    </div>
+                  {% endfor %}
+                {% endif %}
+              {% endwith %}
+            </div>
+          </div>
+    </main>
+
+        <div class="text-center p-3 mb-2 bg-light text-dark">
+            <title>Upload new File</title>
+            <h4>Upload new File</h4>
+            <p>Must be in the JPEG format</p>
+            <br>
+
+            <form method=post enctype=multipart/form-data>
+              <input type=file name=file>
+              <input type=submit value=Upload class="btn btn-primary mb-2">
+            </form>
+
+        </div>
+        <br><br>
+        <div class="text-center">
+            <h4>Previous Submissions</h4>
+            <br>
+        </div>
+        <div class="row justify-content-center">
+
+            {% for file in files %}
+                <div class="card w-75 mt-3">
+
+                    <div class="card-body row">
+                        <div class="ml-lg-5 mr-lg-5">
+                            <img src="{{ url_for('static', filename=file) }}" height="128px" width="128px" class="pull-right">
+                        </div>
+                        <div class="ml-lg-5">
+                            <p class="card-text">Our guess is:</p>
+                            <h3 class="card-title ml-5">
+                                {{ numbers[loop.index0][0] }}
+                            </h3>
+
+                        </div>
+                    </div>
+
+                </div>
+            {% endfor %}
+
+        </div>
+
+        </div>
+
+{% endblock content %}

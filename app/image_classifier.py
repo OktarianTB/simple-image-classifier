@@ -68,29 +68,29 @@ class ImageClassifier:
                 for row in range(len(image)):
                     for pixel in range(len(image[row])):
                         if image[row][pixel] == test_image[row][pixel] == 0:
-                            confidence_dict[number] += 2
+                            confidence_dict[number] += 5
                         elif image[row][pixel] == test_image[row][pixel] == 1:
                             continue
                         else:
                             confidence_dict[number] -= 1
 
         max_confidence = sorted(confidence_dict.values(), reverse=True)
-        print(confidence_dict)
         for key, value in confidence_dict.items():
             if value == max_confidence[0]:
-                return key, min(round(
-                    abs(((1.0 / max_confidence[0]) * max_confidence[1]) * 100)
-                    , 2), 100.00)
+                confidence_score = max_confidence[1] / max_confidence[0] * 100
+                return key, max(min(round(confidence_score, 2), 100.00), 0.00)
 
 
-if __name__ == "__main__":
+def create_classifier():
     ImageClassifier.create_database("images", "number_db")
     image_classifier = ImageClassifier("number_db")
     image_classifier.open_database()
-    print(image_classifier)
     image_classifier.normalize_database(ImageClassifier.normalize_binary)
-    for number in range(10):
-        print("test_" + str(number) + ": ", end="")
-        print(image_classifier.classify_image("test_images/test_" + str(number) + ".jpg",
-                                              ImageClassifier.normalize_binary))
+    # for number in range(10):
+    #     print("test_" + str(number) + ": ", end="")
+    #     print(image_classifier.classify_image("test_images/test_" + str(number) + ".jpg",
+    #                                           ImageClassifier.normalize_binary))
+
+    return image_classifier
+
 
